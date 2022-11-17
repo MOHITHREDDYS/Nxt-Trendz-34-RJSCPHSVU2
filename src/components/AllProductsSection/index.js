@@ -151,21 +151,11 @@ class AllProductsSection extends Component {
 
   renderProductsList = () => {
     const {productsList, activeOptionId} = this.state
+    console.log(productsList)
+    console.log(productsList.length)
 
     // TODO: Add No Products View
-    return productsList.length === 0 ? (
-      <div className="failure-container">
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
-          alt="no products"
-          className="failure-image"
-        />
-        <p className="failure-heading">No Products Found</p>
-        <p className="failure-description">
-          We could not find any products. Try other filters.
-        </p>
-      </div>
-    ) : (
+    return productsList.length > 0 ? (
       <div className="all-products-container">
         <ProductsHeader
           activeOptionId={activeOptionId}
@@ -178,6 +168,8 @@ class AllProductsSection extends Component {
           ))}
         </ul>
       </div>
+    ) : (
+      this.renderNoProductsView()
     )
   }
 
@@ -203,19 +195,19 @@ class AllProductsSection extends Component {
     </div>
   )
 
-  /* renderNoProductsView = () => (
+  renderNoProductsView = () => (
     <div className="failure-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
         alt="no products"
         className="failure-image"
       />
-      <p className="failure-heading">No Products Found</p>
+      <h1 className="failure-heading">No Products Found</h1>
       <p className="failure-description">
         We could not find any products. Try other filters.
       </p>
     </div>
-  ) */
+  )
 
   displayResultPage = () => {
     const {apiStatus} = this.state
