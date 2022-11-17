@@ -70,7 +70,6 @@ const apiStatusList = {
   loading: 'LOADING',
   success: 'SUCCESS',
   failure: 'FAILURE',
-  noProducts: 'NO_PRODUCTS',
 }
 
 class AllProductsSection extends Component {
@@ -119,15 +118,9 @@ class AllProductsSection extends Component {
         imageUrl: product.image_url,
         rating: product.rating,
       }))
-      if (updatedData.length !== 0) {
-        return this.setState({
-          productsList: updatedData,
-          apiStatus: apiStatusList.success,
-        })
-      }
       return this.setState({
         productsList: updatedData,
-        apiStatus: apiStatusList.noProducts,
+        apiStatus: apiStatusList.success,
       })
     }
     return this.setState({apiStatus: apiStatusList.failure})
@@ -160,7 +153,19 @@ class AllProductsSection extends Component {
     const {productsList, activeOptionId} = this.state
 
     // TODO: Add No Products View
-    return (
+    return productsList.length === 0 ? (
+      <div className="failure-container">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
+          alt="no products"
+          className="failure-image"
+        />
+        <p className="failure-heading">No Products Found</p>
+        <p className="failure-description">
+          We could not find any products. Try other filters.
+        </p>
+      </div>
+    ) : (
       <div className="all-products-container">
         <ProductsHeader
           activeOptionId={activeOptionId}
@@ -198,7 +203,7 @@ class AllProductsSection extends Component {
     </div>
   )
 
-  renderNoProductsView = () => (
+  /* renderNoProductsView = () => (
     <div className="failure-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
@@ -210,7 +215,7 @@ class AllProductsSection extends Component {
         We could not find any products. Try other filters.
       </p>
     </div>
-  )
+  ) */
 
   displayResultPage = () => {
     const {apiStatus} = this.state
@@ -218,8 +223,6 @@ class AllProductsSection extends Component {
     switch (apiStatus) {
       case apiStatusList.success:
         return this.renderProductsList()
-      case apiStatusList.noProducts:
-        return this.renderNoProductsView()
       case apiStatusList.failure:
         return this.renderFailureView()
       case apiStatusList.loading:
